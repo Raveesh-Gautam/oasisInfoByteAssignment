@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Bootstrap demo</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+</head>
+
+<body>
+  <h1 class="text-md-center">Todo list  Web App</h1>
+  <div class="mb-3">
+    <label for="title" class="form-label">Title</label>
+    <input type="text" class="form-control" id="title">
+  </div>
+  <div class="mb-3">
+    <label for="description" class="form-label">Description</label>
+    <textarea class="form-control" id="description" rows="3"></textarea>
+  </div>
+ <button type="button" id="add" class="btn btn-primary">Save</button>
+ <button type="button" id="clear" class="btn btn-danger" onclick="storageclear()">clear</button>
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">sn.</th>
+        <th scope="col">Title</th>
+        <th scope="col">Description</th>
+        <th scope="col">Handle</th>
+      </tr>
+    </thead>
+    <tbody id="display">
+      <tr>
+        <td>1</td>
+        <td>Mark</td>
+        <td>Otto</td>
+        <td><button type="button"  class="btn btn-primary">delete</button></td>
+   </tr>
+    </tbody>
+  </table>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
+        crossorigin="anonymous"></script>
+        <script>
+          
+
+ function getandUpdate(){
+  titleshow=document.getElementById('title').value;
+ desc=document.getElementById('description').value;
+  if(localStorage.getItem('itemJson')==null){
+     Arrjson=[];
+    Arrjson.push([titleshow,desc]);
+    localStorage.setItem('itemJson',JSON.stringify(Arrjson));
+  }
+  else{
+    Arrstr=localStorage.getItem('itemJson');
+Arrjson=JSON.parse(Arrstr);
+Arrjson.push([titleshow,desc]);
+    localStorage.setItem('itemJson',JSON.stringify(Arrjson));
+  }
+  update();
+ }
+  function update(){
+    if(localStorage.getItem('itemJson')==null){
+     Arrjson=[];
+     localStorage.setItem('itemJson',JSON.stringify(Arrjson));
+  
+  }
+  else{
+    Arrstr=localStorage.getItem('itemJson');
+Arrjson=JSON.parse(Arrstr);
+
+  }
+  titleshow=document.getElementById('title').value;
+ desc=document.getElementById('description').value;
+
+
+let val=document.getElementById('display');
+let printdis="";
+Arrjson.forEach((element,ind) => {
+  printdis+=` <tr>
+        <td>${ind+1}</td>
+        <td>${element[0]}</td>
+        <td>${element[1]}</td>
+        <td><button type="button"onclick="removed(${ind})" class="btn btn-primary">delete</button></td>
+   </tr>`
+
+});
+val.innerHTML=printdis;
+ 
+  }
+  add =document.getElementById('add');
+
+add.addEventListener("click",getandUpdate);
+update();
+function removed(itemindex){
+  Arrstr=localStorage.getItem('itemJson');
+Arrjson=JSON.parse(Arrstr);
+Arrjson.splice(itemindex,1);
+localStorage.setItem('itemJson',JSON.stringify(Arrjson));
+update();
+}
+function storageclear(){
+  localStorage.clear();
+  update();
+}
+
+        </script>
+</body>
+
+</html>
